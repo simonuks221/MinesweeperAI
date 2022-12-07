@@ -21,6 +21,8 @@ def getNeighbours(i, j, gm):
                     neighbours.append(9/10)
                 else:
                     neighbours.append(gm.board[i+x][j+y]/10)
+            # else: #For edges of board
+                # neighbours.append(0)
     return neighbours
 
 
@@ -37,7 +39,7 @@ def FindLowestValue(gm):
     #testableTiles = np.array(testableTiles)
     output = model.predict(testableTiles)
     minIndex = np.argmax(output)
-    return testableTileCoords[minIndex]
+    return testableTileCoords[minIndex], output[minIndex]
 
 
 gm = GameInstance(BOARD_SIZE, 10)
@@ -51,8 +53,9 @@ while True:
     # print the board
     gm.printOutTheBoard()
     # get input from the user
-    (row, col) = FindLowestValue(gm)
-    print("Round ", roundIndex, " Chosen: ", col, row)
+    (row, col), confidence = FindLowestValue(gm)
+    print("Round ", roundIndex, " Chosen: ",
+          col, row, " Confidence: ", confidence)
     #row = int(input("Enter row: "))
     #col = int(input("Enter column: "))
 

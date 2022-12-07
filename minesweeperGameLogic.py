@@ -60,6 +60,8 @@ class GameInstance:
                 if self.revealed[i][j]:
                     if self.board[i][j] == -1:
                         print("*", end=" ")
+                    elif self.board[i][j] == 0:
+                        print(" ", end=" ")
                     else:
                         print(self.board[i][j], end=" ")
                 else:

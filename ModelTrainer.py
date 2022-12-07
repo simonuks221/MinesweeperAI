@@ -1,4 +1,5 @@
 from tensorflow import keras
+import tensorflow as tf
 # nuosekliai jungtam neuroniniam tinklui
 from keras import Sequential
 # sluoksniai kuriuos desim i neuronini tinkla
@@ -9,6 +10,9 @@ import pandas as pd
 import numpy as np
 import ast
 D_SIZE = 2
+
+print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+
 
 df = pd.read_csv('{id}x{id}TrainData.csv'.format(id=D_SIZE*2+1))
 
@@ -23,8 +27,10 @@ my_list = np.array(my_list)
 model = Sequential([
     Dense(128, input_shape=(
         my_list.shape[1],), activation='elu'),
+    Dense(256, activation='elu'),
+    Dense(64, activation='elu'),
     Dense(32, activation='elu'),
-    Dense(1, activation='elu')
+    Dense(1)
 ])
 
 model.compile(optimizer='adam',
@@ -32,7 +38,7 @@ model.compile(optimizer='adam',
 
 history = model.fit(my_list,
                     df['TileValue'],
-                    batch_size=16, epochs=50, verbose=1, validation_split=0.1,
+                    batch_size=64, epochs=50, verbose=1, validation_split=0.1,
                     callbacks=[keras.callbacks.EarlyStopping(patience=10)])
 
 save_model(model, 'modelis{id}x{id}.h5'.format(id=D_SIZE*2+1))

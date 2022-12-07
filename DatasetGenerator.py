@@ -36,6 +36,7 @@ def generateDatasetEntry(gm, i, j):
                     visible += 1
                     neighbours.append(gm.board[i+x][j+y]/10)
             else:
+                # neighbours.append(0) #for edges of board
                 return False, neighbours, trueMember
     if visible > 2:  # viso 25
         return True, neighbours, trueMember
