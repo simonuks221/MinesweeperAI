@@ -10,13 +10,13 @@ import pandas as pd
 import numpy as np
 import ast
 import random
+D_SIZE = 2
+BOARD_SIZE = 30
+num_mines = 20
 
-df = pd.read_csv('3x3TrainData.csv')
+df = pd.read_csv('{id}x{id}TrainData.csv'.format(id=D_SIZE*2+1))
 
-model = load_model('modelis1.h5')
-
-BOARD_SIZE = 15
-D_SIZE = 1
+model = load_model('modelis{id}x{id}.h5'.format(id=D_SIZE*2+1))
 
 # initialize the revealed tiles list with all False values
 revealed = [[False for i in range(BOARD_SIZE)] for j in range(BOARD_SIZE)]
@@ -26,7 +26,6 @@ board = [[0 for i in range(BOARD_SIZE)] for j in range(BOARD_SIZE)]
 checked = [[0 for i in range(BOARD_SIZE)] for j in range(BOARD_SIZE)]
 
 # define the number of mines on the board
-num_mines = 10
 
 
 def placeMines(board):
@@ -106,7 +105,6 @@ def GenerateBoard():
 
 
 def getNeighbours(i, j):
-    D_SIZE = 1
     global board
     global revealed
     neighbours = []
@@ -131,11 +129,10 @@ def FindLowestValue():
         for j in range(1, BOARD_SIZE):
             if not revealed[i][j]:
                 neighbours = getNeighbours(i, j)
-                if len(neighbours) == 9:
+                if len(neighbours) == (1+2*D_SIZE)*(1+2*D_SIZE):
                     testableTiles.append(neighbours)
                     testableTileCoords.append((i, j))
     #testableTiles = np.array(testableTiles)
-    # print(testableTiles)
     output = model.predict(testableTiles)
 
     minIndex = np.argmax(output)

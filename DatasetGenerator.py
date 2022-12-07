@@ -14,7 +14,7 @@ from sklearn.preprocessing import StandardScaler
 
 # define the size of the board
 BOARD_SIZE = 10
-D_SIZE = 1
+D_SIZE = 2
 
 # initialize the revealed tiles list with all False values
 revealed = [[False for i in range(BOARD_SIZE)] for j in range(BOARD_SIZE)]
@@ -211,4 +211,4 @@ for i in range(20000):
 
 df = pd.DataFrame(list(zip(dataset_x, dataset_y)),
                   columns=['BoardValues', 'TileValue'])
-df.to_csv('3x3TrainData.csv')
+df.to_csv('{id}x{id}TrainData.csv'.format(id=D_SIZE*2+1))

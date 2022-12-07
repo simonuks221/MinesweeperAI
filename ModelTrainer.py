@@ -9,9 +9,9 @@ from keras.models import save_model, load_model
 import pandas as pd
 import numpy as np
 import ast
+D_SIZE = 2
 
-
-df = pd.read_csv('3x3TrainData.csv')
+df = pd.read_csv('{id}x{id}TrainData.csv'.format(id=D_SIZE*2+1))
 
 my_list = []
 for i in range(df.shape[0]):
@@ -36,4 +36,4 @@ history = model.fit(my_list,
                     batch_size=16, epochs=50, verbose=1, validation_split=0.1,
                     callbacks=[keras.callbacks.EarlyStopping(patience=10)])
 
-save_model(model, 'modelis1.h5')
+save_model(model, 'modelis{id}x{id}.h5'.format(id=D_SIZE*2+1))
