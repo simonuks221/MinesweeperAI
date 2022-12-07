@@ -26,6 +26,20 @@ class GameInstance:
                     count += 1
         return count
 
+    def checkWinCondition(self):
+        hiddenTiles = 0
+        for i in range(self.BOARD_SIZE):
+            for j in range(self.BOARD_SIZE):
+                if self.board[i][j] == -1 and self.revealed[i][j]:
+                    # if a mine is revealed, the game is over
+                    return -1
+                if not self.revealed[i][j]:
+                    hiddenTiles += 1
+        if hiddenTiles == self.num_mines:
+            return 1
+        else:
+            return 0
+
     def reveal_tile(self, i, j):
         if i >= 0 and i < self.BOARD_SIZE and j >= 0 and j < self.BOARD_SIZE and not self.revealed[i][j]:
             self.revealed[i][j] = True
@@ -40,7 +54,7 @@ class GameInstance:
                 self.reveal_tile(i+1, j+1)
                 self.reveal_tile(i+1, j-1)
 
-    def printOutTHeBoard(self):
+    def printOutTheBoard(self):
         for i in range(self.BOARD_SIZE):
             for j in range(self.BOARD_SIZE):
                 if self.revealed[i][j]:

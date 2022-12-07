@@ -45,16 +45,12 @@ def generateDatasetEntry(gm, i, j):
 
 def generate_dataset(gm, dataset_x, dataset_y):
     # check if the game is over
-    game_over = False
-    for i in range(BOARD_SIZE):
-        for j in range(BOARD_SIZE):
-            if gm.board[i][j] == -1 and gm.revealed[i][j]:
-                # if a mine is revealed, the game is over
-                game_over = True
-                break
-        if game_over:
-            break
-    if game_over:
+    outcome = gm.checkWinCondition()
+    if outcome == 1:
+        #print("Game WON!")
+        return
+    elif outcome == -1:
+        #print("Game LOST!")
         return
 
     for i in range(BOARD_SIZE):

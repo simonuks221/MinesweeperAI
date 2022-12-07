@@ -1,9 +1,7 @@
-import matplotlib.pyplot as plt
-from tensorflow import keras
+
 from keras.models import load_model
 import pandas as pd
 import numpy as np
-import ast
 from minesweeperGameLogic import GameInstance
 
 D_SIZE = 2
@@ -29,7 +27,6 @@ def getNeighbours(i, j, gm):
 def FindLowestValue(gm):
     testableTiles = []
     testableTileCoords = []
-
     for i in range(1, BOARD_SIZE):
         for j in range(1, BOARD_SIZE):
             if not gm.revealed[i][j]:
@@ -39,9 +36,7 @@ def FindLowestValue(gm):
                     testableTileCoords.append((i, j))
     #testableTiles = np.array(testableTiles)
     output = model.predict(testableTiles)
-
     minIndex = np.argmax(output)
-
     return testableTileCoords[minIndex]
 
 
@@ -54,7 +49,7 @@ roundIndex = 0
 while True:
     roundIndex += 1
     # print the board
-    gm.printOutTHeBoard()
+    gm.printOutTheBoard()
     # get input from the user
     (row, col) = FindLowestValue(gm)
     print("Round ", roundIndex, " Chosen: ", col, row)
@@ -64,16 +59,10 @@ while True:
     # reveal the tile at the specified coordinates
     gm.reveal_tile(row, col)
 
-    # check if the game is over
-    game_over = False
-    for i in range(BOARD_SIZE):
-        for j in range(BOARD_SIZE):
-            if gm.board[i][j] == -1 and gm.revealed[i][j]:
-                # if a mine is revealed, the game is over
-                game_over = True
-                break
-        if game_over:
-            break
-    if game_over:
-        print("Game over!")
+    outcome = gm.checkWinCondition()
+    if outcome == 1:
+        print("Game WON!")
+        break
+    elif outcome == -1:
+        print("Game LOST!")
         break

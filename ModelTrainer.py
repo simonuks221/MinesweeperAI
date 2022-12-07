@@ -1,11 +1,10 @@
-import matplotlib.pyplot as plt
 from tensorflow import keras
 # nuosekliai jungtam neuroniniam tinklui
-from keras import Sequential, Input, Model
+from keras import Sequential
 # sluoksniai kuriuos desim i neuronini tinkla
-from keras.layers import Dense, Flatten, Conv2D, MaxPooling2D
-from keras.layers import Dense, Concatenate, Embedding, Flatten, LSTM
-from keras.models import save_model, load_model
+from keras.layers import Dense
+from keras.layers import Dense
+from keras.models import save_model
 import pandas as pd
 import numpy as np
 import ast
