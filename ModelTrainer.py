@@ -38,7 +38,7 @@ model.compile(optimizer='adam',
 
 history = model.fit(my_list,
                     df['TileValue'],
-                    batch_size=64, epochs=50, verbose=1, validation_split=0.1,
-                    callbacks=[keras.callbacks.EarlyStopping(patience=10)])
+                    batch_size=64, epochs=50, verbose=1, validation_split=0.2,
+                    callbacks=[keras.callbacks.EarlyStopping(patience=5)])
 
 save_model(model, 'modelis{id}x{id}.h5'.format(id=D_SIZE*2+1))

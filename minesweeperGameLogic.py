@@ -15,8 +15,9 @@ class GameInstance:
             i = random.randint(0, self.BOARD_SIZE-1)
             j = random.randint(0, self.BOARD_SIZE-1)
             if self.board[i][j] != -1:
-                self.board[i][j] = -1
-                num_mines -= 1
+                if i > 1 and j > 1 and i < self.BOARD_SIZE-1 and j < self.BOARD_SIZE-1:
+                    self.board[i][j] = -1
+                    num_mines -= 1
 
     def count_adjacent_mines(self, i, j):
         count = 0

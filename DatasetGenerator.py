@@ -31,14 +31,14 @@ def generateDatasetEntry(gm, i, j):
         for y in range(-D_SIZE, D_SIZE+1):
             if i+x >= 0 and j+y >= 0 and i+x < BOARD_SIZE-1 and j+y < BOARD_SIZE-1:
                 if not gm.revealed[i+x][j+y]:
-                    neighbours.append(9/10)
+                    neighbours.append(0.9)
                 else:
                     visible += 1
                     neighbours.append(gm.board[i+x][j+y]/10)
             else:
                 # neighbours.append(0) #for edges of board
                 return False, neighbours, trueMember
-    if visible > 2:  # viso 25
+    if visible > 7:  # viso 25
         return True, neighbours, trueMember
     else:
         return False, neighbours, trueMember
@@ -68,19 +68,18 @@ def generate_dataset(gm, dataset_x, dataset_y):
                                     dataset_x.append(neighbours)
                                     dataset_y.append(trueMembers)
             # go through the board and generate a dataset for each empty space of the largest size
-    '''for i in range(BOARD_SIZE):
+    for i in range(BOARD_SIZE):
         for j in range(BOARD_SIZE):
-            if not revealed[i][j]:
-                reveal_tile(board, revealed, i, j)
-                checked = [[0 for i in range(BOARD_SIZE)]
-                           for j in range(BOARD_SIZE)]
-                generate_dataset(board, revealed, dataset_x, dataset_y)
-'''
+            if not gm.revealed[i][j]:
+                gm.reveal_tile(i, j)
+                gm.checked = [[0 for i in range(BOARD_SIZE)]
+                              for j in range(BOARD_SIZE)]
+                generate_dataset(gm, dataset_x, dataset_y)
 
 
 gm = GameInstance(BOARD_SIZE, 10)
 
-for i in range(20000):
+for i in range(40000):
     if i % 1000 == 0:
         print(i)
     gm.GenerateBoard()

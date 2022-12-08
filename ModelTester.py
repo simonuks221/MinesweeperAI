@@ -3,6 +3,7 @@ from keras.models import load_model
 import pandas as pd
 import numpy as np
 from minesweeperGameLogic import GameInstance
+import matplotlib.pyplot as plt
 
 D_SIZE = 2
 BOARD_SIZE = 15
@@ -13,6 +14,7 @@ model = load_model('modelis{id}x{id}.h5'.format(id=D_SIZE*2+1))
 
 
 def getNeighbours(i, j, gm):
+
     neighbours = []
     for x in range(-D_SIZE, D_SIZE+1):
         for y in range(-D_SIZE, D_SIZE+1):
@@ -37,35 +39,58 @@ def FindLowestValue(gm):
                     testableTiles.append(neighbours)
                     testableTileCoords.append((i, j))
     #testableTiles = np.array(testableTiles)
-    output = model.predict(testableTiles)
+    output = model.predict(testableTiles, verbose=0)
     minIndex = np.argmax(output)
     return testableTileCoords[minIndex], output[minIndex]
 
 
 gm = GameInstance(BOARD_SIZE, 10)
-gm.GenerateBoard()
 #printOutTHeBoard(board, revealed)
 
 # main game loop
-roundIndex = 0
-while True:
-    roundIndex += 1
-    # print the board
-    gm.printOutTheBoard()
-    # get input from the user
-    (row, col), confidence = FindLowestValue(gm)
-    print("Round ", roundIndex, " Chosen: ",
-          col, row, " Confidence: ", confidence)
-    #row = int(input("Enter row: "))
-    #col = int(input("Enter column: "))
 
-    # reveal the tile at the specified coordinates
-    gm.reveal_tile(row, col)
 
-    outcome = gm.checkWinCondition()
-    if outcome == 1:
-        print("Game WON!")
-        break
-    elif outcome == -1:
-        print("Game LOST!")
-        break
+def PlayGame(printout=False):
+    gm.GenerateBoard()
+    roundIndex = 0
+    while True:
+        roundIndex += 1
+        # print the board
+
+        # get input from the user
+        (row, col), confidence = FindLowestValue(gm)
+        if printout:
+            gm.printOutTheBoard()
+            print("Round ", roundIndex, " Chosen: ",
+                  col, row, " Confidence: ", confidence)
+        #row = int(input("Enter row: "))
+        #col = int(input("Enter column: "))
+
+        # reveal the tile at the specified coordinates
+        gm.reveal_tile(row, col)
+
+        outcome = gm.checkWinCondition()
+        if outcome == 1:
+            print("Game WON!")
+            return roundIndex
+        elif outcome == -1:
+            #print("Game LOST!")
+            return roundIndex
+
+
+generateGraphs = True
+if generateGraphs:
+    allRounds = []
+    for i in range(0, 100):
+        print("Round checked: ", i)
+        newRound = PlayGame()
+        allRounds.append(newRound)
+    maxRound = max(allRounds)
+    plt.hist(allRounds, bins=maxRound)
+    plt.title("Kiek teisingu spejimu padaryta per 100 zaidimu")
+    plt.xlabel("Teisingu spejimu skaicius")
+    plt.ylabel("Zaidimu skaicius")
+    plt.xticks(range(1, maxRound))
+    plt.show()
+else:
+    PlayGame(True)
