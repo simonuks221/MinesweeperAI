@@ -90,3 +90,26 @@ class GameInstance:
             for j in range(self.BOARD_SIZE):
                 if self.board[i][j] == 0:
                     self.reveal_tile(i, j)
+
+    def ConvertGameBoard(self):
+        newBoard = []
+        newMines = []
+        for i in range(self.BOARD_SIZE):
+            for j in range(self.BOARD_SIZE):
+                newTile = []
+
+                if not self.revealed[i][j]:
+                    newTile += [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+                else:
+                    for ii in range(0, 9):
+                        if self.board[i][j] == ii:
+                            newTile += [1]
+                        else:
+                            newTile += [0]
+                    newTile += [0]
+                newBoard += newTile
+                if self.board[i][j] == -1:
+                    newMines.append(0)
+                else:
+                    newMines.append(1)
+        return newBoard, newMines

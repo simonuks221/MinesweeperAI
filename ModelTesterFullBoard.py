@@ -18,21 +18,16 @@ gm = GameInstance(BOARD_SIZE, 10)
 
 
 def FindLowestValue(gm):
-    newBoard = []
-    for i in range(BOARD_SIZE):
-        for j in range(BOARD_SIZE):
-            if not gm.revealed[i][j]:
-                newBoard.append(0.9)
-            else:
-                newBoard.append(gm.board[i][j])
-    newBoard = [newBoard]
-    newBoard = np.array(newBoard)
-    output = model.predict(newBoard, verbose=0)
+    newBoard, newMines = gm.ConvertGameBoard()
+    output = model.predict([newBoard], verbose=0)
     maxIndex = 0
     maxValue = 0
     # print(len(output[0]))
+    # print(output)
+    # print(newBoard)
+    # print()
     for i in range(len(output[0])):
-        if newBoard[0][i] == 0.9:
+        if newBoard[i*10+9] == 1:
             if output[0][i] > maxValue:
                 maxIndex = i
                 maxValue = output[0][i]

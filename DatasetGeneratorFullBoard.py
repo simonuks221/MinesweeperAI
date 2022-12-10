@@ -19,25 +19,7 @@ def generate_dataset(gm, dataset_x, dataset_y):
         # print("Game LOST!")
         return
 
-    newBoard = []
-    newMines = []
-    for i in range(BOARD_SIZE):
-        for j in range(BOARD_SIZE):
-            newTile = []
-
-            if not gm.revealed[i][j]:
-                newTile += [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
-            else:
-                for ii in range(0, 9):
-                    if gm.board[i][j] == ii:
-                        newTile += [1]
-                    else:
-                        newTile += [0]
-            newBoard += newTile
-            if gm.board[i][j] == -1:
-                newMines.append(0)
-            else:
-                newMines.append(1)
+    newBoard, newMines = gm.Convert()
     dataset_x.append(newBoard)
     dataset_y.append(newMines)
 
