@@ -23,18 +23,18 @@ def generate_dataset(gm, dataset_x, dataset_y):
     dataset_x.append(newBoard)
     dataset_y.append(newMines)
 
-    '''for i in range(BOARD_SIZE):
+    for i in range(BOARD_SIZE):
         for j in range(BOARD_SIZE):
             if not gm.revealed[i][j] and gm.board[i][j] != -1:
                 gm.reveal_tile(i, j)
                 gm.checked = [[0 for i in range(BOARD_SIZE)]
                               for j in range(BOARD_SIZE)]
-                generate_dataset(gm, dataset_x, dataset_y)'''
+                generate_dataset(gm, dataset_x, dataset_y)
 
 
 gm = GameInstance(BOARD_SIZE, 10)
 
-for i in range(1000):
+for i in range(5000):
     if i % 1000 == 0:
         print(i)
     gm.GenerateBoard()

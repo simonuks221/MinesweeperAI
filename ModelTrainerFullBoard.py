@@ -31,9 +31,10 @@ train_y = np.array(train_y)
 print()
 
 model = Sequential([
-    Dense(512, input_shape=(train_x.shape[1],), activation='relu'),
-    Dense(512, activation='relu'),
-    Dense(100)
+    Dense(1024, input_shape=(train_x.shape[1],), activation='elu'),
+    Dense(2048, activation='elu'),
+    Dense(512, activation='elu'),
+    Dense(train_y.shape[1])
 ])
 
 model.compile(optimizer='adam',

@@ -1,13 +1,4 @@
-import random
-import matplotlib.pyplot as plt
-from tensorflow import keras
-# nuosekliai jungtam neuroniniam tinklui
-from keras import Sequential, Input, Model
 # sluoksniai kuriuos desim i neuronini tinkla
-from keras.layers import Dense, Flatten, Conv2D, MaxPooling2D
-from keras.layers import Dense, Concatenate, Embedding, Flatten, LSTM
-from keras.utils import plot_model
-from keras.models import save_model, load_model
 import pandas as pd
 import numpy as np
 from minesweeperGameLogic import GameInstance
@@ -29,12 +20,20 @@ def generateDatasetEntry(gm, i, j):
         trueMember = 1
     for x in range(-D_SIZE, D_SIZE+1):
         for y in range(-D_SIZE, D_SIZE+1):
+            newTile = []
             if i+x >= 0 and j+y >= 0 and i+x < BOARD_SIZE-1 and j+y < BOARD_SIZE-1:
                 if not gm.revealed[i+x][j+y]:
-                    neighbours.append(0.9)
+                    newTile += [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
                 else:
                     visible += 1
-                    neighbours.append(gm.board[i+x][j+y]/10)
+                    # print("a")
+                    for ii in range(0, 9):
+                        if gm.board[i+x][j+y] == ii:
+                            newTile += [1]
+                        else:
+                            newTile += [0]
+                    newTile += [0]
+                neighbours += newTile
             else:
                 # neighbours.append(0) #for edges of board
                 return False, neighbours, trueMember
@@ -48,14 +47,23 @@ def generate_dataset(gm, dataset_x, dataset_y):
     # check if the game is over
     outcome = gm.checkWinCondition()
     if outcome == 1:
-        #print("Game WON!")
+        # print("Game WON!")
         return
     elif outcome == -1:
-        #print("Game LOST!")
+        # print("Game LOST!")
         return
 
     for i in range(BOARD_SIZE):
         for j in range(BOARD_SIZE):
+            if not gm.revealed[i][j]:
+                # print("a")
+                success, neighbours, trueMembers = generateDatasetEntry(
+                    gm, i, j)
+                if success:
+                    gm.checked[i][j] = 1
+                    dataset_x.append(neighbours)
+                    dataset_y.append(trueMembers)
+            '''
             if gm.revealed[i][j] and gm.board[i][j] != 0:
                 for x in range(-D_SIZE, D_SIZE+1):
                     for y in range(-D_SIZE, D_SIZE+1):
@@ -66,7 +74,7 @@ def generate_dataset(gm, dataset_x, dataset_y):
                                 if success:
                                     gm.checked[i+x][j+y] = 1
                                     dataset_x.append(neighbours)
-                                    dataset_y.append(trueMembers)
+                                    dataset_y.append(trueMembers)'''
             # go through the board and generate a dataset for each empty space of the largest size
     for i in range(BOARD_SIZE):
         for j in range(BOARD_SIZE):
@@ -79,10 +87,11 @@ def generate_dataset(gm, dataset_x, dataset_y):
 
 gm = GameInstance(BOARD_SIZE, 10)
 
-for i in range(40000):
+for i in range(15000):
     if i % 1000 == 0:
         print(i)
     gm.GenerateBoard()
+    # gm.printOutTheBoard()
     generate_dataset(gm, dataset_x, dataset_y)
 
 

@@ -25,12 +25,12 @@ for i in range(df.shape[0]):
 my_list = np.array(my_list)
 
 model = Sequential([
-    Dense(128, input_shape=(
+    Dense(256, input_shape=(
         my_list.shape[1],), activation='elu'),
-    Dense(256, activation='elu'),
-    Dense(64, activation='elu'),
+    Dense(1024, activation='elu'),
+    Dense(512, activation='elu'),
     Dense(32, activation='elu'),
-    Dense(1)
+    Dense(1, activation='elu')
 ])
 
 model.compile(optimizer='adam',
@@ -38,7 +38,7 @@ model.compile(optimizer='adam',
 
 history = model.fit(my_list,
                     df['TileValue'],
-                    batch_size=64, epochs=50, verbose=1, validation_split=0.2,
+                    batch_size=64, epochs=10, verbose=1, validation_split=0.2,
                     callbacks=[keras.callbacks.EarlyStopping(patience=5)])
 
 save_model(model, 'modelis{id}x{id}.h5'.format(id=D_SIZE*2+1))

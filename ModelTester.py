@@ -1,4 +1,3 @@
-
 from keras.models import load_model
 import pandas as pd
 import numpy as np
@@ -14,15 +13,21 @@ model = load_model('modelis{id}x{id}.h5'.format(id=D_SIZE*2+1))
 
 
 def getNeighbours(i, j, gm):
-
     neighbours = []
     for x in range(-D_SIZE, D_SIZE+1):
         for y in range(-D_SIZE, D_SIZE+1):
             if i+x >= 0 and j+y >= 0 and i+x < BOARD_SIZE and j+y < BOARD_SIZE:
+                newTile = []
                 if not gm.revealed[i+x][j+y]:
-                    neighbours.append(9/10)
+                    newTile += [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
                 else:
-                    neighbours.append(gm.board[i+x][j+y]/10)
+                    for ii in range(0, 9):
+                        if gm.board[i+x][j+y] == ii:
+                            newTile += [1]
+                        else:
+                            newTile += [0]
+                    newTile += [0]
+                neighbours += newTile
             # else: #For edges of board
                 # neighbours.append(0)
     return neighbours
@@ -35,7 +40,7 @@ def FindLowestValue(gm):
         for j in range(1, BOARD_SIZE):
             if not gm.revealed[i][j]:
                 neighbours = getNeighbours(i, j, gm)
-                if len(neighbours) == (1+2*D_SIZE)*(1+2*D_SIZE):
+                if len(neighbours) == 250:
                     testableTiles.append(neighbours)
                     testableTileCoords.append((i, j))
     #testableTiles = np.array(testableTiles)

@@ -67,15 +67,17 @@ def PlayGame(printout=False):
 
 
 generateGraphs = True
+graphAmount = 300
 if generateGraphs:
     allRounds = []
-    for i in range(0, 100):
+    for i in range(graphAmount):
         print("Round checked: ", i)
         newRound = PlayGame(False)
         allRounds.append(newRound)
     maxRound = max(allRounds)
     plt.hist(allRounds, bins=maxRound)
-    plt.title("Kiek teisingu spejimu padaryta per 100 zaidimu")
+    plt.title(
+        "Kiek teisingu spejimu padaryta per {g} zaidimu".format(g=graphAmount))
     plt.xlabel("Teisingu spejimu skaicius")
     plt.ylabel("Zaidimu skaicius")
     plt.xticks(range(1, maxRound))
