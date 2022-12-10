@@ -1,51 +1,39 @@
-import random
-import matplotlib.pyplot as plt
-from tensorflow import keras
-# nuosekliai jungtam neuroniniam tinklui
-from keras import Sequential, Input, Model
-# sluoksniai kuriuos desim i neuronini tinkla
-from keras.layers import Dense, Flatten, Conv2D, MaxPooling2D
-from keras.layers import Dense, Concatenate, Embedding, Flatten, LSTM
-from keras.utils import plot_model
-from keras.models import save_model, load_model
 import pandas as pd
 import numpy as np
 from minesweeperGameLogic import GameInstance
 
 BOARD_SIZE = 10
 
+# Nulis, vienas, du, trys, keturi, penki, sesi, septyni, astuoni, nematomas
 dataset_x = []
-dataset_y = []
-
-
-def generateDatasetEntry(gm, i, j):
-    visible = 0
-    neighbours = []
-    if gm.board[i][j] == -1:
-        trueMember = 0
-    else:
-        trueMember = 1
+dataset_y = []  # Bomba = -1, nebomba = 1
 
 
 def generate_dataset(gm, dataset_x, dataset_y):
     # check if the game is over
     outcome = gm.checkWinCondition()
     if outcome == 1:
-        #print("Game WON!")
+        # print("Game WON!")
         return
     elif outcome == -1:
-        #print("Game LOST!")
+        # print("Game LOST!")
         return
 
     newBoard = []
     newMines = []
     for i in range(BOARD_SIZE):
         for j in range(BOARD_SIZE):
-            if not gm.revealed[i][j]:
-                newBoard.append(0.9)
-            else:
-                newBoard.append(gm.board[i][j])
+            newTile = []
 
+            if not gm.revealed[i][j]:
+                newTile += [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+            else:
+                for ii in range(0, 9):
+                    if gm.board[i][j] == ii:
+                        newTile += [1]
+                    else:
+                        newTile += [0]
+            newBoard += newTile
             if gm.board[i][j] == -1:
                 newMines.append(0)
             else:
@@ -64,7 +52,7 @@ def generate_dataset(gm, dataset_x, dataset_y):
 
 gm = GameInstance(BOARD_SIZE, 10)
 
-for i in range(100000):
+for i in range(1000):
     if i % 1000 == 0:
         print(i)
     gm.GenerateBoard()
