@@ -41,7 +41,7 @@ model.compile(optimizer='adam',
 
 history = model.fit(train_x,
                     train_y,
-                    batch_size=64, epochs=50, verbose=1, validation_split=0.2,
+                    batch_size=64, epochs=10, verbose=1, validation_split=0.2,
                     callbacks=[keras.callbacks.EarlyStopping(patience=5)])
 
 save_model(model, 'modelisFullBoard.h5')

@@ -19,7 +19,7 @@ def generate_dataset(gm, dataset_x, dataset_y):
         # print("Game LOST!")
         return
 
-    newBoard, newMines = gm.Convert()
+    newBoard, newMines = gm.ConvertGameBoard()
     dataset_x.append(newBoard)
     dataset_y.append(newMines)
 
