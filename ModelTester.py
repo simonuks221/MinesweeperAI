@@ -4,8 +4,8 @@ import numpy as np
 from minesweeperGameLogic import GameInstance
 import matplotlib.pyplot as plt
 
-D_SIZE = 2
-BOARD_SIZE = 15
+D_SIZE = 3
+BOARD_SIZE = 10
 
 df = pd.read_csv('{id}x{id}TrainData.csv'.format(id=D_SIZE*2+1))
 
@@ -40,7 +40,7 @@ def FindLowestValue(gm):
         for j in range(1, BOARD_SIZE):
             if not gm.revealed[i][j]:
                 neighbours = getNeighbours(i, j, gm)
-                if len(neighbours) == 250:
+                if len(neighbours) == 10*(D_SIZE*2+1)*(D_SIZE*2+1):
                     testableTiles.append(neighbours)
                     testableTileCoords.append((i, j))
     #testableTiles = np.array(testableTiles)
@@ -86,7 +86,7 @@ def PlayGame(printout=False):
 generateGraphs = True
 if generateGraphs:
     allRounds = []
-    for i in range(0, 100):
+    for i in range(0, 1000):
         print("Round checked: ", i)
         newRound = PlayGame()
         allRounds.append(newRound)

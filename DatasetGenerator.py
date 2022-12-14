@@ -4,7 +4,7 @@ import numpy as np
 from minesweeperGameLogic import GameInstance
 
 
-D_SIZE = 2
+D_SIZE = 3
 BOARD_SIZE = 10
 
 dataset_x = []
@@ -37,7 +37,7 @@ def generateDatasetEntry(gm, i, j):
             else:
                 # neighbours.append(0) #for edges of board
                 return False, neighbours, trueMember
-    if visible > 7:  # viso 25
+    if visible > 10:  # viso 25
         return True, neighbours, trueMember
     else:
         return False, neighbours, trueMember
@@ -87,7 +87,7 @@ def generate_dataset(gm, dataset_x, dataset_y):
 
 gm = GameInstance(BOARD_SIZE, 10)
 
-for i in range(15000):
+for i in range(10000):
     if i % 1000 == 0:
         print(i)
     gm.GenerateBoard()

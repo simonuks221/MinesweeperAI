@@ -9,7 +9,7 @@ from keras.models import save_model
 import pandas as pd
 import numpy as np
 import ast
-D_SIZE = 2
+D_SIZE = 3
 
 print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 
@@ -23,9 +23,11 @@ for i in range(df.shape[0]):
     # print(newList)
     my_list.append(newList)
 my_list = np.array(my_list)
+print(my_list.shape)
+print()
 
 model = Sequential([
-    Dense(256, input_shape=(
+    Dense(2048, input_shape=(
         my_list.shape[1],), activation='elu'),
     Dense(1024, activation='elu'),
     Dense(512, activation='elu'),
@@ -38,7 +40,7 @@ model.compile(optimizer='adam',
 
 history = model.fit(my_list,
                     df['TileValue'],
-                    batch_size=64, epochs=10, verbose=1, validation_split=0.2,
+                    batch_size=64, epochs=50, verbose=1, validation_split=0.2,
                     callbacks=[keras.callbacks.EarlyStopping(patience=5)])
 
 save_model(model, 'modelis{id}x{id}.h5'.format(id=D_SIZE*2+1))
