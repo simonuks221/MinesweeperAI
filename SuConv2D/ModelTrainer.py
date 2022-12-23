@@ -24,12 +24,10 @@ for i in range(df['BoardValues'].shape[0]):
 
 model = Sequential([
     Input(shape=(D_SIZE*2+1, D_SIZE*2+1, 10)),
-    Conv2D(1024, (2, 2), padding='same'),
-    Conv2D(1024, (2, 2), padding='same'),
-    Conv2D(512, (2, 2), padding='same'),
-    Conv2D(1, (2, 2), padding='same'),
-    MaxPooling2D(pool_size=(D_SIZE*2+1, D_SIZE*2+1)),
-    Dense(1, activation='softmax')
+    Conv2D(1024, (2, 2), padding='same', activation='elu'),
+    Conv2D(1, (2, 2), padding='same', activation='elu'),
+    MaxPooling2D(pool_size=(D_SIZE*2+1, D_SIZE*2+1))
+    #Dense(1, activation='softmax')
 
     # Flatten(name='flatten')
 ])
@@ -52,14 +50,18 @@ model = Sequential([
 model.compile(optimizer='adam',
               loss='mean_absolute_error')
 
+print(model.summary())
+print()
+
 data_y = []
 for i in range(df['BoardValues'].shape[0]):
     data_y.append(int(df['TileValue'][i]))
-data_y = df['TileValue']
+#data_y = df['TileValue']
+# print(data_y)
 
 history = model.fit(np.array(my_list),
                     np.array(data_y),
-                    batch_size=4, epochs=20, verbose=1, validation_split=0.2,
+                    batch_size=512, epochs=10, verbose=1, validation_split=0.2,
                     callbacks=[keras.callbacks.EarlyStopping(patience=5)])
 
 save_model(model, 'modelis{id}x{id}.h5'.format(id=D_SIZE*2+1))

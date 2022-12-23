@@ -87,7 +87,7 @@ def generate_dataset(gm, dataset_x, dataset_y):
 
 gm = GameInstance(BOARD_SIZE, 10)
 
-for i in range(10000):
+for i in range(100000):
     if i % 1000 == 0:
         print(i)
     gm.GenerateBoard()

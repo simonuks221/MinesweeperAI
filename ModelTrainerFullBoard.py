@@ -4,15 +4,14 @@ import tensorflow as tf
 from keras import Sequential
 # sluoksniai kuriuos desim i neuronini tinkla
 from keras.layers import Dense
-from keras.layers import Dense
-from keras.models import save_model
+from keras.models import save_model, load_model
 import pandas as pd
 import numpy as np
 import ast
 from sklearn.model_selection import train_test_split
 
 print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
-
+#model = load_model('modelisFullBoard.h5')
 
 df = pd.read_csv('FullBoardTrainData.csv')
 
@@ -31,9 +30,9 @@ train_y = np.array(train_y)
 print()
 
 model = Sequential([
-    Dense(1024, input_shape=(train_x.shape[1],), activation='elu'),
-    Dense(2048, activation='elu'),
-    Dense(512, activation='elu'),
+    Dense(4096, input_shape=(train_x.shape[1],)),
+    Dense(2048),
+    Dense(512),
     Dense(train_y.shape[1])
 ])
 
@@ -42,7 +41,7 @@ model.compile(optimizer='adam',
 
 history = model.fit(train_x,
                     train_y,
-                    batch_size=64, epochs=10, verbose=1, validation_split=0.2,
+                    batch_size=4096, epochs=30, verbose=1, validation_split=0.2,
                     callbacks=[keras.callbacks.EarlyStopping(patience=5)])
 
 save_model(model, 'modelisFullBoard.h5')

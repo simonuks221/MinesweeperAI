@@ -67,7 +67,7 @@ def PlayGame(printout=False):
 
 
 generateGraphs = True
-graphAmount = 300
+graphAmount = 100
 if generateGraphs:
     allRounds = []
     for i in range(graphAmount):

@@ -2,3 +2,5 @@
 *.csv
 *.csv
 5x5TrainData.csv
+modelis9x9.h5
+SuConv2D/modelis5x5.h5

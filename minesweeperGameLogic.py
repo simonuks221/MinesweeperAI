@@ -1,4 +1,5 @@
 import random
+from termcolor import colored
 
 num_mines = 10
 
@@ -15,9 +16,9 @@ class GameInstance:
             i = random.randint(0, self.BOARD_SIZE-1)
             j = random.randint(0, self.BOARD_SIZE-1)
             if self.board[i][j] != -1:
-                if i > 1 and j > 1 and i < self.BOARD_SIZE-1 and j < self.BOARD_SIZE-1:
-                    self.board[i][j] = -1
-                    num_mines -= 1
+                # if i > 1 and j > 1 and i < self.BOARD_SIZE-1 and j < self.BOARD_SIZE-1:
+                self.board[i][j] = -1
+                num_mines -= 1
 
     def count_adjacent_mines(self, i, j):
         count = 0
@@ -56,18 +57,35 @@ class GameInstance:
                 self.reveal_tile(i+1, j-1)
 
     def printOutTheBoard(self):
+        for i in range(self.BOARD_SIZE+1):
+            print("--", end="")
+        print()
         for i in range(self.BOARD_SIZE):
+            print("|", end="")
             for j in range(self.BOARD_SIZE):
                 if self.revealed[i][j]:
                     if self.board[i][j] == -1:
                         print("*", end=" ")
                     elif self.board[i][j] == 0:
                         print(" ", end=" ")
+                    elif self.board[i][j] == 1:
+                        print(colored("1", "blue"), end=" ")
+                    elif self.board[i][j] == 2:
+                        print(colored("2", "green"), end=" ")
+                    elif self.board[i][j] == 3:
+                        print(colored("3", "red"), end=" ")
+                    elif self.board[i][j] == 4:
+                        print(colored("4", "yellow"), end=" ")
+                    elif self.board[i][j] == 5:
+                        print(colored("5", "magenta"), end=" ")
                     else:
-                        print(self.board[i][j], end=" ")
+                        print(colored(self.board[i][j], "cyan"), end=" ")
                 else:
                     print("#", end=" ")
-            print()
+            print("|")
+        for i in range(self.BOARD_SIZE+1):
+            print("--", end="")
+        print()
 
     def GenerateBoard(self):
         self.revealed = [[False for i in range(self.BOARD_SIZE)]

@@ -5,9 +5,12 @@ from minesweeperGameLogic import GameInstance
 import matplotlib.pyplot as plt
 
 D_SIZE = 2
-BOARD_SIZE = 15
+BOARD_SIZE = 10
 
 model = load_model('modelis{id}x{id}.h5'.format(id=D_SIZE*2+1))
+
+print(model.summary())
+print()
 
 
 def getNeighbours(i, j, gm):
@@ -48,6 +51,9 @@ def FindLowestValue(gm):
 
     output = model.predict(testableTiles, verbose=0)
     minIndex = np.argmax(output)
+
+    # print(output)
+    # print()
 
     return testableTileCoords[minIndex], output[minIndex]
 

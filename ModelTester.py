@@ -4,8 +4,9 @@ import numpy as np
 from minesweeperGameLogic import GameInstance
 import matplotlib.pyplot as plt
 
-D_SIZE = 3
-BOARD_SIZE = 10
+D_SIZE = 4
+num_of_mines = 20
+BOARD_SIZE = 20
 
 df = pd.read_csv('{id}x{id}TrainData.csv'.format(id=D_SIZE*2+1))
 
@@ -49,7 +50,7 @@ def FindLowestValue(gm):
     return testableTileCoords[minIndex], output[minIndex]
 
 
-gm = GameInstance(BOARD_SIZE, 10)
+gm = GameInstance(BOARD_SIZE, num_of_mines)
 #printOutTHeBoard(board, revealed)
 
 # main game loop
@@ -83,10 +84,10 @@ def PlayGame(printout=False):
             return roundIndex
 
 
-generateGraphs = True
+generateGraphs = False
 if generateGraphs:
     allRounds = []
-    for i in range(0, 1000):
+    for i in range(0, 100):
         print("Round checked: ", i)
         newRound = PlayGame()
         allRounds.append(newRound)
