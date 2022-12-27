@@ -19,4 +19,6 @@ Modeliai turėtų būti pridėti visur.
 -----------------------------------------------------------------------------------------------------------------------
 # Išbandyti patiems
 
-Išsirenkate aplankalą, atidarote atitinkamą modelTester.py failą, apačioje yra generateGraph kintamasis. True - sugeneruos graphAmount kiekį žaidimų ir jų atitinkamus laimėjimo bei ėjimų grafikus, False - sužais vieną "Minesweeper" žaidimą.
+Išsirenkate aplankalą, atidarote atitinkamą modelTester.py failą, apačioje yra generateGraph kintamasis. 
+True - sugeneruos graphAmount kiekį žaidimų ir jų atitinkamus laimėjimo bei ėjimų grafikus.
+False - sužais vieną "Minesweeper" žaidimą (daryti šitą).
