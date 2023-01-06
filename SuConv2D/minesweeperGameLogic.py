@@ -1,6 +1,5 @@
 import random
-
-num_mines = 10
+from termcolor import colored
 
 
 class GameInstance:
@@ -10,14 +9,14 @@ class GameInstance:
 
     def placeMines(self):
         # place the mines randomly on the board
-        num_mines = 25
-        while num_mines > 0:
+        minesLeft = self.num_mines
+        while minesLeft > 0:
             i = random.randint(0, self.BOARD_SIZE-1)
             j = random.randint(0, self.BOARD_SIZE-1)
             if self.board[i][j] != -1:
-                if i > 1 and j > 1 and i < self.BOARD_SIZE-1 and j < self.BOARD_SIZE-1:
-                    self.board[i][j] = -1
-                    num_mines -= 1
+                # if i > 1 and j > 1 and i < self.BOARD_SIZE-1 and j < self.BOARD_SIZE-1:
+                self.board[i][j] = -1
+                minesLeft -= 1
 
     def count_adjacent_mines(self, i, j):
         count = 0
@@ -56,18 +55,35 @@ class GameInstance:
                 self.reveal_tile(i+1, j-1)
 
     def printOutTheBoard(self):
+        for i in range(self.BOARD_SIZE+1):
+            print("--", end="")
+        print()
         for i in range(self.BOARD_SIZE):
+            print("|", end="")
             for j in range(self.BOARD_SIZE):
                 if self.revealed[i][j]:
                     if self.board[i][j] == -1:
                         print("*", end=" ")
                     elif self.board[i][j] == 0:
                         print(" ", end=" ")
+                    elif self.board[i][j] == 1:
+                        print(colored("1", "blue"), end=" ")
+                    elif self.board[i][j] == 2:
+                        print(colored("2", "green"), end=" ")
+                    elif self.board[i][j] == 3:
+                        print(colored("3", "red"), end=" ")
+                    elif self.board[i][j] == 4:
+                        print(colored("4", "yellow"), end=" ")
+                    elif self.board[i][j] == 5:
+                        print(colored("5", "magenta"), end=" ")
                     else:
-                        print(self.board[i][j], end=" ")
+                        print(colored(self.board[i][j], "cyan"), end=" ")
                 else:
                     print("#", end=" ")
-            print()
+            print("|")
+        for i in range(self.BOARD_SIZE+1):
+            print("--", end="")
+        print()
 
     def GenerateBoard(self):
         self.revealed = [[False for i in range(self.BOARD_SIZE)]
@@ -91,6 +107,36 @@ class GameInstance:
                 if self.board[i][j] == 0:
                     self.reveal_tile(i, j)
 
+    def GetGameBoard(self):
+        newBoard = []
+        newMines = []
+        for i in range(self.BOARD_SIZE):
+            for j in range(self.BOARD_SIZE):
+                if not self.revealed[i][j]:
+                    newBoard.append(-1)
+                else:
+                    newBoard.append(self.board[i][j])
+
+                if self.board[i][j] == -1:
+                    newMines.append(0)
+                else:
+                    newMines.append(1)
+        return newBoard, newMines
+
+    def ConvertGameTile(self, number):
+        newTile = []
+
+        if number == -1:
+            newTile += [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+        else:
+            for ii in range(0, 9):
+                if number == ii:
+                    newTile += [1]
+                else:
+                    newTile += [0]
+            newTile += [0]
+        return newTile
+
     def ConvertGameBoard(self):
         newBoard = []
         newMines = []
@@ -113,3 +159,14 @@ class GameInstance:
                 else:
                     newMines.append(1)
         return newBoard, newMines
+
+
+'''gm = GameInstance(5, 3)
+gm.GenerateBoard()
+gm.printOutTheBoard()
+for i in range(10):
+    x = int(input())
+    y = int(input())
+
+    gm.reveal_tile(x, y)
+    gm.printOutTheBoard()'''
