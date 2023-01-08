@@ -10,7 +10,6 @@ BOMB_NUM = 3
 
 model = load_model('modelisFullBoard.h5')
 
-
 gm = GameInstance(BOARD_SIZE, BOMB_NUM)
 # printOutTHeBoard(board, revealed)
 
@@ -69,7 +68,7 @@ def PlayGame(printout=False):
 
 
 generateGraphs = True
-graphAmount = 300
+graphAmount = 10000
 if generateGraphs:
     allRounds = []
     winlost = [0, 0]

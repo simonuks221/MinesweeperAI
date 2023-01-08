@@ -10,6 +10,7 @@ import numpy as np
 import ast
 from sklearn.model_selection import train_test_split
 from minesweeperGameLogic import GameInstance
+import matplotlib.pyplot as plt
 gm = GameInstance(1, 1)
 
 BOARD_SIZE = 5
@@ -22,8 +23,12 @@ model = Sequential([
     #       input_shape=(BOARD_SIZE, BOARD_SIZE, 10)),
     #Conv2D(16, (2, 2), padding='same'),
 
-    Conv2D(filters=1024, kernel_size=3, strides=(2, 2),
+    Conv2D(filters=255, kernel_size=5, strides=(1, 1), padding="same",
            activation='elu', input_shape=(BOARD_SIZE, BOARD_SIZE, 10)),
+    # Conv2D(filters=64, kernel_size=3, strides=(1, 1), padding="same",
+    #       activation='elu', input_shape=(BOARD_SIZE, BOARD_SIZE, 10)),
+    # Conv2D(filters=64, kernel_size=2, strides=(1, 1),
+    #       activation='elu'),
     MaxPooling2D(pool_size=(2, 2)),
     Flatten(),
     Dense(BOARD_SIZE*BOARD_SIZE)
@@ -31,7 +36,7 @@ model = Sequential([
 
 
 model.compile(optimizer='adam',
-              loss="mean_absolute_error")
+              loss="mean_absolute_error", metrics=['acc'])
 
 print(model.summary())
 print()
@@ -68,3 +73,23 @@ history = model.fit(train_x,
                     callbacks=[keras.callbacks.EarlyStopping(patience=5)])
 
 save_model(model, 'modelisFullBoard.h5')
+
+# performace grafa
+plt.plot(history.history['acc'], c='blue', lw=3)
+plt.plot(history.history['val_acc'], c='orange', lw=3)
+plt.title('Tikslumo grafikas')
+plt.xlabel('Iteracijos, (a.k. epochs)')
+plt.ylabel('tikslumas, (a.k. accuracy)')
+plt.legend(['acc', 'val_acc'])
+plt.grid(True)
+plt.show()
+
+# ---- Loss measure---
+plt.plot(history.history['loss'], c='blue', lw=3)
+plt.plot(history.history['val_loss'], c='orange', lw=3)
+plt.title('Tikslumo grafikas')
+plt.xlabel('Iteracijos, (a.k. epochs)')
+plt.ylabel('Paklaida, (a.k. loss)')
+plt.legend(['loss', 'val_loss'])
+plt.grid(True)
+plt.show()
