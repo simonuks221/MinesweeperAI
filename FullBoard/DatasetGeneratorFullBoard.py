@@ -20,7 +20,6 @@ def generate_dataset(gm, dataset_x, dataset_y):
         # print("Game LOST!")
         return
 
-    #newBoard, newMines = gm.ConvertGameBoard()
     newBoard, newMines = gm.GetGameBoard()
     dataset_x.append(newBoard)
     dataset_y.append(newMines)
@@ -36,7 +35,7 @@ def generate_dataset(gm, dataset_x, dataset_y):
 
 gm = GameInstance(BOARD_SIZE, BOMB_NUM)
 
-for i in range(500000):
+for i in range(500000):  # Kiek zaidimu suzaisti
     if i % 1000 == 0:
         print(i)
     gm.GenerateBoard()

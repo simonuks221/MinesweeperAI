@@ -14,7 +14,6 @@ class GameInstance:
             i = random.randint(0, self.BOARD_SIZE-1)
             j = random.randint(0, self.BOARD_SIZE-1)
             if self.board[i][j] != -1:
-                # if i > 1 and j > 1 and i < self.BOARD_SIZE-1 and j < self.BOARD_SIZE-1:
                 self.board[i][j] = -1
                 minesLeft -= 1
 
@@ -161,6 +160,7 @@ class GameInstance:
         return newBoard, newMines
 
 
+# Jei noretumete patys suzaisti Minesweeper
 '''gm = GameInstance(5, 3)
 gm.GenerateBoard()
 gm.printOutTheBoard()

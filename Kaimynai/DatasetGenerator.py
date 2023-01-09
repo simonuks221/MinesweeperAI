@@ -4,9 +4,9 @@ import numpy as np
 from minesweeperGameLogic import GameInstance
 
 
-D_SIZE = 2
-num_of_mines = 3
-BOARD_SIZE = 5
+D_SIZE = 2  # Kiek kaimynu iš šonų imti, 1 - 3x3, 2 - 5x5 kaimynai.
+num_of_mines = 3  # Minu skaicius
+BOARD_SIZE = 5  # Visos lentos dydis
 
 dataset_x = []
 dataset_y = []
@@ -31,7 +31,7 @@ def generateDatasetEntry(gm, i, j):
                 neighbours.append(-1)  # Add not revealed
                 # neighbours.append(0) #for edges of board
                 # return False, neighbours, trueMember
-    if (visible > 5):
+    if (visible > 2):
         return True, neighbours, trueMember
     else:
         return False, neighbours, trueMember
@@ -57,19 +57,6 @@ def generate_dataset(gm, dataset_x, dataset_y):
                     gm.checked[i][j] = 1
                     dataset_x.append(neighbours)
                     dataset_y.append(trueMembers)
-            '''
-            if gm.revealed[i][j] and gm.board[i][j] != 0:
-                for x in range(-D_SIZE, D_SIZE+1):
-                    for y in range(-D_SIZE, D_SIZE+1):
-                        if i+x >= 0 and j+y >= 0 and i+x < BOARD_SIZE and j+y < BOARD_SIZE:
-                            if not gm.revealed[i+x][j+y] and gm.checked[i+x][j+y] == 0:
-                                success, neighbours, trueMembers = generateDatasetEntry(
-                                    gm, i+x, j+y)
-                                if success:
-                                    gm.checked[i+x][j+y] = 1
-                                    dataset_x.append(neighbours)
-                                    dataset_y.append(trueMembers)'''
-            # go through the board and generate a dataset for each empty space of the largest size
     for i in range(BOARD_SIZE):
         for j in range(BOARD_SIZE):
             if not gm.revealed[i][j]:
@@ -81,11 +68,10 @@ def generate_dataset(gm, dataset_x, dataset_y):
 
 gm = GameInstance(BOARD_SIZE, num_of_mines)
 
-for i in range(500000):
+for i in range(150000):  # Kiek zaidimu suzaisti
     if i % 1000 == 0:
         print(i)
     gm.GenerateBoard()
-    # gm.printOutTheBoard()
     generate_dataset(gm, dataset_x, dataset_y)
 
 

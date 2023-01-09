@@ -1,4 +1,3 @@
-
 from keras.models import load_model
 import pandas as pd
 import numpy as np
@@ -12,9 +11,6 @@ model = load_model('modelisFullBoard.h5')
 
 
 gm = GameInstance(BOARD_SIZE, BOMB_NUM)
-# printOutTHeBoard(board, revealed)
-
-# main game loop
 
 
 def FindLowestValue(gm):
@@ -22,10 +18,6 @@ def FindLowestValue(gm):
     output = model.predict([newBoard], verbose=0)
     maxIndex = 0
     maxValue = 0
-    # print(len(output[0]))
-    # print(output)
-    # print(newBoard)
-    # print()
     for i in range(len(output[0])):
         if newBoard[i*10+9] == 1:
             if output[0][i] > maxValue:
@@ -33,8 +25,6 @@ def FindLowestValue(gm):
                 maxValue = output[0][i]
     row = maxIndex / (BOARD_SIZE)
     col = maxIndex % (BOARD_SIZE)
-    # gm.printOutTheBoard()
-    #print(row, col, maxIndex)
     return ((int(row)), int(round(col))), output[0][maxIndex]
 
 
@@ -43,16 +33,11 @@ def PlayGame(printout=False):
     roundIndex = 0
     while True:
         roundIndex += 1
-        # print the board
-
-        # get input from the user
         (row, col), confidence = FindLowestValue(gm)
         if printout:
             gm.printOutTheBoard()
             print("Round ", roundIndex, " Chosen: col row",
                   col, row, " Confidence: ", confidence)
-        # row = int(input("Enter row: "))
-        # col = int(input("Enter column: "))
 
         # reveal the tile at the specified coordinates
         gm.reveal_tile(row, col)
@@ -66,8 +51,8 @@ def PlayGame(printout=False):
             return roundIndex, 0
 
 
-generateGraphs = True
-graphAmount = 1000
+generateGraphs = False
+graphAmount = 10000
 if generateGraphs:
     allRounds = []
     winlost = [0, 0]

@@ -31,7 +31,6 @@ def getNeighbours(i, j, gm):
                 neighbours += newTile
             else:  # For edges of board
                 neighbours += [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
-                # neighbours.append(0)
     return neighbours
 
 
@@ -45,12 +44,6 @@ def FindLowestValue(gm):
                 if len(neighbours) == 10*(D_SIZE*2+1)*(D_SIZE*2+1):
                     testableTiles.append(neighbours)
                     testableTileCoords.append((i, j))
-                # else:
-
-                    # print(len(neighbours))
-    #testableTiles = np.array(testableTiles)
-   # print(testableTiles)
-    # print()
     if len(testableTiles) > 0:
         output = model.predict(testableTiles, verbose=0)
         minIndex = np.argmax(output)
@@ -59,7 +52,6 @@ def FindLowestValue(gm):
 
 
 gm = GameInstance(BOARD_SIZE, num_of_mines)
-#printOutTHeBoard(board, revealed)
 
 # main game loop
 
@@ -75,14 +67,6 @@ def PlayGame(printout=False):
         (row, col), confidence = FindLowestValue(gm)
         if row == -1 and col == -1:
             outcome = -1
-            # if printout:
-            # gm.printOutTheBoard()
-            # print("Round ", roundIndex, " Chosen: ",
-            #     col, row, " Confidence: ", confidence)
-            #row = int(input("Enter row: "))
-            #col = int(input("Enter column: "))
-
-            # reveal the tile at the specified coordinates
         else:
             gm.reveal_tile(row, col)
 
@@ -96,8 +80,8 @@ def PlayGame(printout=False):
             return roundIndex, 0
 
 
-generateGraphs = True
-graphAmount = 1000
+generateGraphs = False  # Ar generuoti statistiniu grafikus ar suzaisti viena zaidima
+graphAmount = 10000  # Kiek zaidimu suzaisti grafikam nupiesti
 if generateGraphs:
     allRounds = []
     winlost = [0, 0]

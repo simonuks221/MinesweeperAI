@@ -16,19 +16,9 @@ gm = GameInstance(1, 1)
 BOARD_SIZE = 5
 
 print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
-# model = load_model('modelisFullBoard.h5')
-
 model = Sequential([
-    # Conv2D(128, (3, 3), padding='same',
-    #       input_shape=(BOARD_SIZE, BOARD_SIZE, 10)),
-    #Conv2D(16, (2, 2), padding='same'),
-
-    Conv2D(filters=255, kernel_size=5, strides=(1, 1), padding="same",
+    Conv2D(filters=512, kernel_size=5, strides=(1, 1), padding="same",
            activation='elu', input_shape=(BOARD_SIZE, BOARD_SIZE, 10)),
-    # Conv2D(filters=64, kernel_size=3, strides=(1, 1), padding="same",
-    #       activation='elu', input_shape=(BOARD_SIZE, BOARD_SIZE, 10)),
-    # Conv2D(filters=64, kernel_size=2, strides=(1, 1),
-    #       activation='elu'),
     MaxPooling2D(pool_size=(2, 2)),
     Flatten(),
     Dense(BOARD_SIZE*BOARD_SIZE)
@@ -59,9 +49,6 @@ for i in range(df.shape[0]):
 
     train_x.append(newnewXlist.tolist())
     train_y.append(newYList)
-
-# train_x = train_x.tolist()
-# train_y = train_y.tolist()
 
 train_x = np.array(train_x)
 train_y = np.array(train_y)
